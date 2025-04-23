@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import '../../presentation/screens/home/home_screen.dart';
 import '../../presentation/screens/plans/plan_screen.dart';
 import '../../presentation/screens/cars/my_cars_screen.dart';
+import '../../presentation/screens/cars/car_listing_buyer_screen.dart';
 void _emptyAction() {}
 
 class MainScaffold extends StatelessWidget {
@@ -44,7 +45,15 @@ class MainScaffold extends StatelessWidget {
                   );
                 },
               ),
-              const DrawerItem(label: 'CARS LISTING', onTap: _emptyAction),
+              DrawerItem(
+                label: 'CARS LISTING',
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const CarListingBuyerScreen()),
+                  );
+                },
+              ),
               DrawerItem(
                 label: 'MY CARS',
                 onTap: () {

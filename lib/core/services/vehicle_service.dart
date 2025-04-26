@@ -38,4 +38,23 @@ class VehicleService {
 
     return await getVehiclesByProfile(profileId.toString());
   }
+
+  Future<List<Map<String, dynamic>>> getAllVehicles() async {
+    final url = Uri.parse('$baseUrl/vehicle/all');
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        return data.map((vehicle) => vehicle as Map<String, dynamic>).toList();
+      } else {
+        print('❌ Error al obtener todos los vehículos: ${response.body}');
+        return [];
+      }
+    } catch (e) {
+      print('❌ Excepción al obtener todos los vehículos: $e');
+      return [];
+    }
+  }
 }

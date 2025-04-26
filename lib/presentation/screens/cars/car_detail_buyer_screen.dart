@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/main_scaffold.dart';
+import '../transaction/payment_buyer.dart';
+import 'car_technical_review_buyer_screen.dart';
 
 class CarDetailBuyerScreen extends StatefulWidget {
   final Map<String, dynamic> vehicle;
@@ -13,7 +15,7 @@ class CarDetailBuyerScreen extends StatefulWidget {
 class _CarDetailBuyerScreenState extends State<CarDetailBuyerScreen> {
   int _currentIndex = 0;
 
-  List<dynamic>? get _images => widget.vehicle['images'] as List<dynamic>?;
+  List<dynamic>? get _images => widget.vehicle['image'] as List<dynamic>?;
   bool get _hasImages => _images?.isNotEmpty == true;
 
   @override
@@ -26,7 +28,9 @@ class _CarDetailBuyerScreenState extends State<CarDetailBuyerScreen> {
     final transmission = (widget.vehicle['transmission'] as String?) ?? '-';
     final fuel = (widget.vehicle['fuel'] as String?) ?? '-';
     final location = (widget.vehicle['location'] as String?) ?? '-';
-    final colors = widget.vehicle['colors'] as List<dynamic>? ?? [];
+    final colors = widget.vehicle['color'] != null
+        ? [widget.vehicle['color']]
+        : ['-'];
     final doors = widget.vehicle['doors']?.toString() ?? '-';
     final mileage = widget.vehicle['mileage']?.toString() ?? '-';
 
@@ -41,20 +45,42 @@ class _CarDetailBuyerScreenState extends State<CarDetailBuyerScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Car Details',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                        style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        children: [
+                          const TextSpan(text: 'Car '),
+                          TextSpan(
+                            text: 'Details',
+                            style: const TextStyle(color: Color(0xFFFFD54F)),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => PaymentBuyerScreen(vehicle: widget.vehicle),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: accentColor,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   ),
-                  child: const Text('Add Offer', style: TextStyle(color: Colors.white),),
-
-                ),
+                  child: const Text('Add Offer', style: TextStyle(color: Colors.white)),
+                )
               ],
             ),
             const SizedBox(height: 16),
@@ -171,7 +197,14 @@ class _CarDetailBuyerScreenState extends State<CarDetailBuyerScreen> {
                     const SizedBox(height: 12),
                     Center(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CarTechnicalReviewBuyerScreen(vehicle: widget.vehicle),
+                            ),
+                          );
+                        },
                         style: TextButton.styleFrom(
                           backgroundColor: accentColor,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

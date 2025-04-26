@@ -17,7 +17,7 @@ class _CarListingBuyerScreenState extends State<CarListingBuyerScreen> {
   @override
   void initState() {
     super.initState();
-    _vehiclesFuture = _vehicleService.getMyCars();
+    _vehiclesFuture = _vehicleService.getAllVehicles();
   }
 
   @override
@@ -69,51 +69,8 @@ class _CarListingBuyerScreenState extends State<CarListingBuyerScreen> {
                     return const Center(child: Text('❌ Error al cargar vehículos'));
                   }
 
-                  // Datos estáticos de ejemplo
-                  final vehicles = [
-                    {
-                      'images': [
-                        'https://ca-times.brightspotcdn.com/dims4/default/1271d98/2147483647/strip/false/crop/1280x720+0+0/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fbb%2F8f%2Ffc4f7a334cf4b0fcdb2744dc27d9%2Fcorolla-hatchback-2.jpg',
-                        'https://www.toyotaperu.com.pe/sites/default/files/2025-02/cabecera-financiamiento-corolla-mobile.webp'
-                      ],
-                      'model': 'Toyota Corolla',
-                      'price': 45000,
-                      'year': '2018',
-                      'mileage': 60000,
-                      'fuel': 'Gasolina',
-                      'location': 'Lima',
-                      'doors': 4,
-                      'transmission': 'Automática',
-                      'description': 'Sedán confiable con bajo consumo de combustible y mantenimiento económico.',
-                      'colors': ['Blanco', 'Rojo'],
-                    },
-                    {
-                      'images': ['https://ca-times.brightspotcdn.com/dims4/default/1271d98/2147483647/strip/false/crop/1280x720+0+0/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fbb%2F8f%2Ffc4f7a334cf4b0fcdb2744dc27d9%2Fcorolla-hatchback-2.jpg'],
-                      'model': 'Toyota Corolla',
-                      'price': 45000,
-                      'year': '2018',
-                      'mileage': 60000,
-                      'fuel': 'Gasolina',
-                      'location': 'Lima',
-                      'doors': 4,
-                      'transmission': 'Automática',
-                      'description': 'Sedán confiable con bajo consumo de combustible y mantenimiento económico.',
-                      'colors': ['Blanco', 'Rojo'],
-                    },
-                    {
-                      'images': ['https://ca-times.brightspotcdn.com/dims4/default/1271d98/2147483647/strip/false/crop/1280x720+0+0/resize/1200x675!/quality/75/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2Fbb%2F8f%2Ffc4f7a334cf4b0fcdb2744dc27d9%2Fcorolla-hatchback-2.jpg'],
-                      'model': 'Toyota Corolla',
-                      'price': 45000,
-                      'year': '2018',
-                      'mileage': 60000,
-                      'fuel': 'Gasolina',
-                      'location': 'Lima',
-                      'doors': 4,
-                      'transmission': 'Automática',
-                      'description': 'Sedán confiable con bajo consumo de combustible y mantenimiento económico.',
-                      'colors': ['Blanco', 'Rojo'],
-                    },
-                  ];
+
+                  final vehicles = snapshot.data ?? [];
 
                   if (vehicles.isEmpty) {
                     return const Center(
@@ -128,7 +85,7 @@ class _CarListingBuyerScreenState extends State<CarListingBuyerScreen> {
                     itemCount: vehicles.length,
                     itemBuilder: (context, index) {
                       final vehicle = vehicles[index] as Map<String, dynamic>;
-                      final images = vehicle['images'] as List<dynamic>?;
+                      final images = vehicle['image'] as List<dynamic>?;
                       final hasImages = images?.isNotEmpty == true;
 
                       return Card(

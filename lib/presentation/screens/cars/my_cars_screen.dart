@@ -1,6 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:car_2_go/core/services/vehicle_service.dart';
 import '../../widgets/main_scaffold.dart';
+import 'package:car_2_go/models/new_vehicle.dart';
+import 'package:car_2_go/presentation/screens/cars/contact_data_screen.dart';
+import 'car_detail_screen.dart';
 
 class MyCarsScreen extends StatefulWidget {
   const MyCarsScreen({super.key});
@@ -37,13 +42,21 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Navegar a crear auto
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ContactDataScreen(
+                          newVehicle: NewVehicle(), // ← siempre pasas un objeto vacío al inicio
+                        ),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFFD54F),
                   ),
                   child: const Text('Sell Cars'),
                 )
+
               ],
             ),
             const Text(
@@ -96,8 +109,10 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: vehicle['images'] != null && vehicle['images'].isNotEmpty
+                                    ? (vehicle['images'][0].startsWith('http')
                                     ? Image.network(vehicle['images'][0], height: 160, fit: BoxFit.cover)
-                                    : Image.asset('assets/placeholder-car.jpg', height: 160),
+                                    : Image.file(File(vehicle['images'][0]), height: 160, fit: BoxFit.cover))
+                                    : Image.asset('assets/auto-ejemplo.png', height: 200),
                               ),
                               const SizedBox(height: 12),
                               Row(
@@ -107,7 +122,18 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                     vehicle['model'] ?? 'Modelo Auto',
                                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                                   ),
-                                  Text('Details', style: TextStyle(color: Colors.blue.shade700)),
+                                  // 👇 Aquí cambiamos el "Details" por un botón
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => CarDetailScreen(vehicle: vehicle),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text('Details', style: TextStyle(color: Colors.blue)),
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 8),

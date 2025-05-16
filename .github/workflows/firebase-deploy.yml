@@ -1,9 +1,9 @@
-name: Deploy Flutter Web to Firebase Hosting
+name: Flutter Deploy to Firebase Hosting
 
 on:
   push:
     branches:
-      - pg-deployment  # Rama que activará el despliegue, cámbiala si usas otra
+      - pg-deployment  # o la rama que uses para desplegar
 
 jobs:
   build-and-deploy:
@@ -16,29 +16,19 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.3'
+          flutter-version: '3.29.2'  # pon la versión que uses
 
       - name: Install dependencies
         run: flutter pub get
 
       - name: Build Flutter Web
-        run: flutter build web
+        run: flutter build web --release
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: Authenticate to Firebase
-        env:
-          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: |
-          echo "$FIREBASE_SERVICE_ACCOUNT" > ${{ github.workspace }}/firebase-service-account.json
-          firebase login:ci --no-localhost || true
-          firebase use --add car2go-mobil-monitoring || true
-          firebase deploy --only hosting --project car2go-mobil-monitoring --token "$(firebase login:ci --no-localhost)" || true
-        shell: bash
-
       - name: Deploy to Firebase Hosting
         env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: |
-          firebase deploy --only hosting --project car2go-mobil-monitoring --token $FIREBASE_TOKEN
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: firebase deploy --only hosting --token $FIREBASE_TOKEN --project car2go-mobil-monitoring
+

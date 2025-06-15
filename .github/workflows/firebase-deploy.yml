@@ -3,7 +3,7 @@ name: Flutter Deploy to Firebase Hosting
 on:
   push:
     branches:
-      - pg-deployment  # o la rama que uses para desplegar
+      - pg-deployment  
 
 jobs:
   build-and-deploy:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'  # pon la versión que uses
+          flutter-version: '3.29.2'  
 
       - name: Install dependencies
         run: flutter pub get

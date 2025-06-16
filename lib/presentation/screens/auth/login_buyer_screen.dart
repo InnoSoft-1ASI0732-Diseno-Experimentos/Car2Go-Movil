@@ -1,21 +1,26 @@
+import 'package:car_2_go/presentation/screens/auth/profile_buyer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:car_2_go/core/services/auth_service.dart';
+import 'package:car_2_go/core/services/user_seller_service.dart';
+import '../../widgets/main_scaffold.dart';
 import 'register_screen.dart';
 import 'forgot_password_screen.dart';
 import '../home/home_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+
+class LoginBuyerScreen extends StatefulWidget {
+  const LoginBuyerScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginBuyerScreen> createState() => _LoginBuyerScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginBuyerScreenState extends State<LoginBuyerScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
+  final UserSellerService _userSellerService = UserSellerService();
 
   bool _rememberMe = false;
 
@@ -35,12 +40,19 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (success) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
-        );
+        final profileExists = await _userSellerService.checkIfProfileExists(context);
+        if (profileExists) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const HomeScreen()),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const ProfileScreen()),
+          );
+        }
       }
-
     }
   }
 

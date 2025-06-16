@@ -1,3 +1,4 @@
+import 'package:car_2_go/presentation/screens/auth/login_buyer_screen.dart';
 import 'package:flutter/material.dart';
 import 'core/services/auth_service.dart';
 import 'presentation/screens/auth/login_screen.dart'; // importa tu pantalla de login
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
         useMaterial3: true,
       ),
-      home: const LoginScreen(), // ← aquí arranca tu app
+      home: const LoginBuyerScreen(), // ← aquí arranca tu app
     );
   }
 }

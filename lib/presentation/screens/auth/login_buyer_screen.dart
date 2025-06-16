@@ -5,7 +5,7 @@ import 'package:car_2_go/core/services/user_seller_service.dart';
 import '../../widgets/main_scaffold.dart';
 import 'register_screen.dart';
 import 'forgot_password_screen.dart';
-import '../home/home_screen.dart';
+import '../home/home_screen_buyer.dart';
 
 
 class LoginBuyerScreen extends StatefulWidget {

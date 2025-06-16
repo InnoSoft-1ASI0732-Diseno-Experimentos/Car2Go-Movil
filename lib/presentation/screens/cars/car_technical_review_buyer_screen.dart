@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../widgets/main_scaffold.dart';
+import '../../widgets/main_scaffold_buyer.dart';
 
 class CarTechnicalReviewBuyerScreen extends StatelessWidget {
   final Map<String, dynamic> vehicle;

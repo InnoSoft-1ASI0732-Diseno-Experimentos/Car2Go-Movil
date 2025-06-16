@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../widgets/main_scaffold.dart';
+import '../../widgets/main_scaffold_buyer.dart';
 import 'send_data_buyer_screen.dart';
 import '../../../core/services/user_seller_service.dart';
 

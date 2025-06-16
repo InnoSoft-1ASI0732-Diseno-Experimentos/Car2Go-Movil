@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../widgets/main_scaffold.dart';
+import '../../widgets/main_scaffold_buyer.dart';
 import '../../../core/services/user_seller_service.dart';
 import 'package:car_2_go/presentation/screens/cars/car_listing_buyer_screen.dart';
 

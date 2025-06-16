@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:car_2_go/core/services/auth_service.dart'; // Importa AuthService
 import 'package:car_2_go/core/services/user_seller_service.dart'; // Import UserSellerService
-import '../home/home_screen.dart'; // Importa HomeScreen
+import '../home/home_screen_buyer.dart'; // Importa HomeScreen
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);

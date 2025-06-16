@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../widgets/main_scaffold.dart';
+import '../../widgets/main_scaffold_buyer.dart';
 import '../transaction/payment_buyer.dart';
 import 'car_technical_review_buyer_screen.dart';
 

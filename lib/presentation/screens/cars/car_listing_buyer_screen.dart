@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:car_2_go/core/services/vehicle_service.dart';
-import '../../widgets/main_scaffold.dart';
+import '../../widgets/main_scaffold_buyer.dart';
 import 'car_detail_buyer_screen.dart';
 
 class CarListingBuyerScreen extends StatefulWidget {

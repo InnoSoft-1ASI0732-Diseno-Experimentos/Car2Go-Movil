@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:car_2_go/core/services/auth_service.dart';
 import 'login_screen.dart';
+import 'first_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -139,7 +140,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     onTap: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const LoginScreen()));
+                          MaterialPageRoute(builder: (_) => const RoleSelectionScreen()));
                     },
                     child: const Text.rich(
                       TextSpan(

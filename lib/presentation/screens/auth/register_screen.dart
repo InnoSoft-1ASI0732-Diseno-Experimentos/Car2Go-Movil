@@ -43,8 +43,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
 
       if (success) {
-        Navigator.pop(context); // volver al login
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const RoleSelectionScreen()),
+        );
       }
+
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

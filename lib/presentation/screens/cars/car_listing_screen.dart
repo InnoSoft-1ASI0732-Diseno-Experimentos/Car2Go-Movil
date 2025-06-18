@@ -1,27 +1,25 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:car_2_go/core/services/vehicle_service.dart';
 import '../../widgets/main_scaffold.dart';
-import 'package:car_2_go/models/new_vehicle.dart';
-import 'package:car_2_go/presentation/screens/cars/contact_data_screen.dart';
+import 'my_cars_screen.dart';
 import 'car_detail_screen.dart';
 
-class MyCarsScreen extends StatefulWidget {
-  const MyCarsScreen({super.key});
+class CarListingScreen extends StatefulWidget {
+  const CarListingScreen({super.key});
 
   @override
-  State<MyCarsScreen> createState() => _MyCarsScreenState();
+  State<CarListingScreen> createState() => _CarListingScreenState();
 }
 
-class _MyCarsScreenState extends State<MyCarsScreen> {
+class _CarListingScreenState extends State<CarListingScreen> {
   final VehicleService _vehicleService = VehicleService();
   late Future<List<dynamic>> _vehiclesFuture;
 
   @override
   void initState() {
     super.initState();
-    _vehiclesFuture = _vehicleService.getMyCars(); // Llama a tu servicio
+    _vehiclesFuture = _vehicleService.getAllVehicles(); // 👈 Método nuevo
   }
 
   @override
@@ -37,35 +35,23 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'My ',
+                  'Car ',
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ContactDataScreen(
-                          newVehicle: NewVehicle(), // ← siempre pasas un objeto vacío al inicio
-                        ),
-                      ),
-                    );
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const MyCarsScreen()));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFFD54F),
                   ),
-                  child: const Text('Sell Cars'),
+                  child: const Text('My Cars'),
                 )
-
               ],
             ),
             const Text(
-              'Cars',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFFFD54F),
-              ),
+              'Listing',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFFFFD54F)),
             ),
             const SizedBox(height: 24),
             Expanded(
@@ -77,18 +63,13 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                   }
 
                   if (snapshot.hasError) {
-                    return const Center(child: Text('❌ Error al cargar vehículos'));
+                    return const Center(child: Text('❌ Error loading vehicles'));
                   }
 
                   final vehicles = snapshot.data!;
 
                   if (vehicles.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'No hay autos para vender',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    );
+                    return const Center(child: Text('No vehicles available'));
                   }
 
                   return ListView.builder(
@@ -106,15 +87,18 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // Imagen principal
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: vehicle['images'] != null && vehicle['images'].isNotEmpty
                                     ? (vehicle['images'][0].startsWith('http')
                                     ? Image.network(vehicle['images'][0], height: 160, fit: BoxFit.cover)
-                                    : Image.file(File(vehicle['images'][0]), height: 160, fit: BoxFit.cover))
-                                    : Image.asset('assets/auto-ejemplo.png', height: 200),
+                                    : Image.asset('assets/auto-ejemplo.png', height: 160, fit: BoxFit.cover))
+                                    : Image.asset('assets/auto-ejemplo.png', height: 160, fit: BoxFit.cover),
                               ),
                               const SizedBox(height: 12),
+
+                              // Modelo + Details
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -122,7 +106,6 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                     vehicle['model'] ?? 'Modelo Auto',
                                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                                   ),
-                                  // 👇 Aquí cambiamos el "Details" por un botón
                                   TextButton(
                                     onPressed: () {
                                       Navigator.push(
@@ -137,8 +120,13 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                                 ],
                               ),
                               const SizedBox(height: 8),
-                              Text('Precio: S/${vehicle['price']}'),
+
+                              // Precio
+                              const Text('Precio', style: TextStyle(color: Colors.black54)),
+
                               const SizedBox(height: 12),
+
+                              // Información resumida
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -156,7 +144,7 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                   );
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -183,7 +171,7 @@ class _InfoTag extends StatelessWidget {
         children: [
           Icon(icon, size: 20),
           const SizedBox(height: 4),
-          Text(label, style: const TextStyle(fontSize: 12)),
+          Text(label, style: const TextStyle(fontSize: 12), textAlign: TextAlign.center),
         ],
       ),
     );

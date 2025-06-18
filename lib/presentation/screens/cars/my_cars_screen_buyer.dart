@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:car_2_go/core/services/vehicle_service.dart';
-import '../../widgets/main_scaffold.dart';
+import '../../widgets/main_scaffold_buyer.dart';
 import 'package:car_2_go/models/new_vehicle.dart';
 import 'package:car_2_go/presentation/screens/cars/contact_data_screen.dart';
 import 'car_detail_screen.dart';

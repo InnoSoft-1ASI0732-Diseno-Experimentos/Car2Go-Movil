@@ -1,27 +1,23 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:car_2_go/core/services/vehicle_service.dart';
-import '../../widgets/main_scaffold.dart';
-import 'package:car_2_go/models/new_vehicle.dart';
-import 'package:car_2_go/presentation/screens/cars/contact_data_screen.dart';
-import 'car_detail_screen.dart';
+import '../../widgets/main_scaffold_buyer.dart';
+import 'car_detail_buyer_screen.dart';
 
-class MyCarsScreen extends StatefulWidget {
-  const MyCarsScreen({super.key});
+class CarListingBuyerScreen extends StatefulWidget {
+  const CarListingBuyerScreen({super.key});
 
   @override
-  State<MyCarsScreen> createState() => _MyCarsScreenState();
+  State<CarListingBuyerScreen> createState() => _CarListingBuyerScreenState();
 }
 
-class _MyCarsScreenState extends State<MyCarsScreen> {
+class _CarListingBuyerScreenState extends State<CarListingBuyerScreen> {
   final VehicleService _vehicleService = VehicleService();
   late Future<List<dynamic>> _vehiclesFuture;
 
   @override
   void initState() {
     super.initState();
-    _vehiclesFuture = _vehicleService.getMyCars(); // Llama a tu servicio
+    _vehiclesFuture = _vehicleService.getAllVehicles();
   }
 
   @override
@@ -36,36 +32,29 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'My ',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                Text.rich(
+                  TextSpan(
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    children: [
+                      const TextSpan(text: 'Car '),
+                      TextSpan(
+                        text: 'Listing',
+                        style: const TextStyle(color: Color(0xFFFFD54F)),
+                      ),
+                    ],
+                  ),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ContactDataScreen(
-                          newVehicle: NewVehicle(), // ← siempre pasas un objeto vacío al inicio
-                        ),
-                      ),
-                    );
-                  },
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFFD54F),
                   ),
-                  child: const Text('Sell Cars'),
+                  child: const Text('My offers'),
                 )
-
               ],
-            ),
-            const Text(
-              'Cars',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFFFD54F),
-              ),
             ),
             const SizedBox(height: 24),
             Expanded(
@@ -80,12 +69,13 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                     return const Center(child: Text('❌ Error al cargar vehículos'));
                   }
 
-                  final vehicles = snapshot.data!;
+
+                  final vehicles = snapshot.data ?? [];
 
                   if (vehicles.isEmpty) {
                     return const Center(
                       child: Text(
-                        'No hay autos para vender',
+                        'No enviaste ofertas',
                         style: TextStyle(fontSize: 18),
                       ),
                     );
@@ -94,7 +84,10 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                   return ListView.builder(
                     itemCount: vehicles.length,
                     itemBuilder: (context, index) {
-                      final vehicle = vehicles[index];
+                      final vehicle = vehicles[index] as Map<String, dynamic>;
+                      final images = vehicle['image'] as List<dynamic>?;
+                      final hasImages = images?.isNotEmpty == true;
+
                       return Card(
                         margin: const EdgeInsets.only(bottom: 16),
                         shape: RoundedRectangleBorder(
@@ -108,42 +101,52 @@ class _MyCarsScreenState extends State<MyCarsScreen> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
-                                child: vehicle['images'] != null && vehicle['images'].isNotEmpty
-                                    ? (vehicle['images'][0].startsWith('http')
-                                    ? Image.network(vehicle['images'][0], height: 160, fit: BoxFit.cover)
-                                    : Image.file(File(vehicle['images'][0]), height: 160, fit: BoxFit.cover))
-                                    : Image.asset('assets/auto-ejemplo.png', height: 200),
+                                child: hasImages
+                                    ? Image.network(
+                                  images!.first,
+                                  height: 160,
+                                  fit: BoxFit.cover,
+                                )
+                                    : Image.asset(
+                                  'assets/placeholder-car.jpg',
+                                  height: 160,
+                                ),
                               ),
                               const SizedBox(height: 12),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    vehicle['model'] ?? 'Modelo Auto',
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                    (vehicle['model'] as String?) ?? 'Modelo Auto',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
                                   ),
-                                  // 👇 Aquí cambiamos el "Details" por un botón
-                                  TextButton(
-                                    onPressed: () {
+                                  InkWell(
+                                    onTap: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => CarDetailScreen(vehicle: vehicle),
+                                          builder: (_) => CarDetailBuyerScreen(vehicle: vehicle),
                                         ),
                                       );
                                     },
-                                    child: const Text('Details', style: TextStyle(color: Colors.blue)),
+                                    child: Text(
+                                      'Details',
+                                      style: TextStyle(color: Colors.blue.shade700),
+                                    ),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 8),
-                              Text('Precio: S/${vehicle['price']}'),
+                              Text("Precio: S/${vehicle['price']}"),
                               const SizedBox(height: 12),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   _InfoTag(icon: Icons.calendar_today, label: vehicle['year']),
-                                  _InfoTag(icon: Icons.speed, label: '${vehicle['mileage']} km'),
+                                  _InfoTag(icon: Icons.speed, label: "${vehicle['mileage']} km"),
                                   _InfoTag(icon: Icons.local_gas_station, label: vehicle['fuel']),
                                   _InfoTag(icon: Icons.location_on, label: vehicle['location']),
                                 ],

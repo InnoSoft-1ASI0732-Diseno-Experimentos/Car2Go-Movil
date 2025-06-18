@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../presentation/screens/home/home_screen.dart';
-import '../../presentation/screens/plans/plan_screen.dart';
-import '../../presentation/screens/cars/my_cars_screen.dart';
-import '../../presentation/screens/cars/car_listing_screen.dart';
-import '../../presentation/screens/profile/profile_screen.dart'; // <-- importa tu ProfileScreen
-
+import '../../presentation/screens/home/home_screen_buyer.dart';
+import '../../presentation/screens/plans/plan_screen_buyer.dart';
+import '../../presentation/screens/cars/my_cars_screen_buyer.dart';
+import '../../presentation/screens/cars/car_listing_buyer_screen.dart';
 void _emptyAction() {}
 
 class MainScaffold extends StatelessWidget {
@@ -20,7 +18,7 @@ class MainScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white, // ← COLOR DE FONDO DE LA PANTALLA
       drawer: Drawer(
         backgroundColor: const Color(0xFF282828),
         child: ListView(
@@ -52,7 +50,7 @@ class MainScaffold extends StatelessWidget {
               onTap: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const CarListingScreen()),
+                  MaterialPageRoute(builder: (_) => const CarListingBuyerScreen()),
                 );
               },
             ),
@@ -70,22 +68,14 @@ class MainScaffold extends StatelessWidget {
       ),
       appBar: AppBar(
         backgroundColor: const Color(0xFF282828),
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white), // ← cambia el color del ícono del Drawer
         toolbarHeight: 100,
         title: Image.asset('assets/logo-car.png', height: 56),
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const ProfileScreen()), // 🚀 Aquí navegas a la pantalla de perfil
-                );
-              },
-              child: const Icon(Icons.account_circle, size: 52, color: Colors.white),
-            ),
-          ),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Icon(Icons.account_circle, size: 52, color: Colors.white),
+          )
         ],
       ),
       body: body,
@@ -108,8 +98,9 @@ class DrawerItem extends StatelessWidget {
       ),
       onTap: () {
         Navigator.pop(context); // cerrar el drawer
-        onTap();
+        onTap(); // ejecutar acción
       },
     );
   }
 }
+

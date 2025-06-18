@@ -3,11 +3,15 @@ import 'package:http/http.dart' as http;
 import '../constants/api_constants.dart';
 
 class AuthService {
+  static final AuthService _instance = AuthService._internal(); // 👈 Crea una sola instancia
+  factory AuthService() => _instance; // 👈 Siempre devuelve la misma instancia
+  AuthService._internal();
+
   final String baseUrl = ApiConstants.baseUrl;
 
   String? token;
   String? username;
-  int? profileId; // ← tipo int para el ID
+  int? profileId;
 
   Future<bool> login(String username, String password) async {
     final url = Uri.parse('$baseUrl/v1/authentication/sign-in');
@@ -30,7 +34,7 @@ class AuthService {
 
       token = data['token'];
       this.username = data['username'];
-      profileId = data['id']; // ← ID = profileId
+      profileId = data['id'];
 
       print('✅ Login exitoso. Token: $token, Usuario: ${this.username}, ID: $profileId');
       return true;
@@ -59,4 +63,3 @@ class AuthService {
     return response.statusCode == 201 || response.statusCode == 200;
   }
 }
-

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1045845185882",
+    "project_id": "car2go-mobil-monitoring",
+    "storage_bucket": "car2go-mobil-monitoring.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045845185882:android:e63fb51ab1711242244f63",
+        "android_client_info": {
+          "package_name": "com.example.car_2_go"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6kJCJRS19HQtnWwYj_XfuypkSyaFJOwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
